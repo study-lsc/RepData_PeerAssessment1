@@ -2,7 +2,8 @@
 
 
 ## Loading and preprocessing the data
-Note:  you have to change the https to http and use the mode="wb" option or the download.file will error out due to the file being binary.
+Note:  When downloading the file with download.file, you have to change the https to http and use the mode="wb" option or the download.file will error out.
+
 ### Handling odd behavior with na.rm=TRUE
 Normally you can use the dplyr summarise function to sum subsets of a dataframe, and use na.rm=TRUE to exclude NA values in the calculation.  There are certain dates (e.g. 2012-10-01) for which all intervals have steps=NA.  When computing a sum for the intervals on this day, with na.rm=TRUE, R should return NA.  Instead it returns 0.  This is incorrect.  To ensure that NA values do not skew calculations such as mean and median (which are run on the totalsteps/day), the rows with NA values must be removed using is.na function in the preprocessing stage. 
 
@@ -157,7 +158,7 @@ print(median(total_bydate_m2$totalsteps_m2))
 ```
 ## [1] 10762
 ```
-The substituted values increases the number of days the histogram shows in in the range between 10,000 and 15,000.  It also impacted the median value, raising it slightly so median and mean are the same.
+The substituted values increased the number of days where total steps was in the range between 10,000 and 15,000 (from ~28 -> ~36).  The mean and median values are both lower than the corresponding values where the NA was removed.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 This is the code that adds a new column of type factor identifying a date as weekend or weekday.  Per the instruction, the dataset that is used is the one where NA values were filled in (the movement2 dataset).

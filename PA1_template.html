@@ -66,7 +66,10 @@ img {
 
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
-<p>Note: you have to change the https to http and use the mode=“wb” option or the download.file will error out due to the file being binary. ### Handling odd behavior with na.rm=TRUE Normally you can use the dplyr summarise function to sum subsets of a dataframe, and use na.rm=TRUE to exclude NA values in the calculation. There are certain dates (e.g. 2012-10-01) for which all intervals have steps=NA. When computing a sum for the intervals on this day, with na.rm=TRUE, R should return NA. Instead it returns 0. This is incorrect. To ensure that NA values do not skew calculations such as mean and median (which are run on the totalsteps/day), the rows with NA values must be removed using is.na function in the preprocessing stage.</p>
+<p>Note: When downloading the file with download.file, you have to change the https to http and use the mode=“wb” option or the download.file will error out.</p>
+<div id="handling-odd-behavior-with-na.rmtrue" class="section level3">
+<h3>Handling odd behavior with na.rm=TRUE</h3>
+<p>Normally you can use the dplyr summarise function to sum subsets of a dataframe, and use na.rm=TRUE to exclude NA values in the calculation. There are certain dates (e.g. 2012-10-01) for which all intervals have steps=NA. When computing a sum for the intervals on this day, with na.rm=TRUE, R should return NA. Instead it returns 0. This is incorrect. To ensure that NA values do not skew calculations such as mean and median (which are run on the totalsteps/day), the rows with NA values must be removed using is.na function in the preprocessing stage.</p>
 <p>The dataframe no_na will contain the dataset where rows with steps=NA are removed. The dataframe movement will contain the original dataset with NA values, as read from the .csv.</p>
 <pre class="r"><code>download.file(&quot;http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip&quot;,&quot;activity.zip&quot;, mode=&quot;wb&quot;)
 unzip(&quot;activity.zip&quot;)
@@ -85,6 +88,7 @@ library(dplyr)</code></pre>
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(ggplot2)</code></pre>
+</div>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
@@ -147,7 +151,7 @@ print(g)</code></pre>
 <p>Below is the median steps per day, using a substituted NA value.</p>
 <pre class="r"><code>print(median(total_bydate_m2$totalsteps_m2))</code></pre>
 <pre><code>## [1] 10762</code></pre>
-<p>The substituted values increases the number of days the histogram shows in in the range between 10,000 and 15,000. It also impacted the median value, raising it slightly so median and mean are the same.</p>
+<p>The substituted values increased the number of days where total steps was in the range between 10,000 and 15,000 (from ~28 -&gt; ~36). The mean and median values are both lower than the corresponding values where the NA was removed.</p>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
